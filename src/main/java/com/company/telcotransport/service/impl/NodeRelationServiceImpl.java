@@ -33,15 +33,18 @@ public class NodeRelationServiceImpl implements NodeRelationService {
         nodeRelationRepository.deleteById(nodeId);
     }
 
-    @Override
     @Transactional
+    @Override
     public NodeRelationResponseDTO getRelation(Long nodeId) {
-        return modelMapper.map(nodeRelationRepository.findById(nodeId)
-                .orElseThrow(() -> new RuntimeException("Node with id " + nodeId + " not found")), NodeRelationResponseDTO.class);
+        return modelMapper.map(nodeRelationRepository.findById(nodeId).orElseThrow(
+                () -> new EntityNotFoundException("Relation not found")), NodeRelationResponseDTO.class);
+
+
     }
 
-    @Override
+
     @Transactional
+    @Override
     public NodeRelationResponseDTO createRelation(NodeRelationRequestDTO nodeRelationRequestDTO) {
         Nodes parentNode = nodeRepository.findById(nodeRelationRequestDTO.getParent())
                 .orElseThrow(() -> new EntityNotFoundException("Parent node not found"));
@@ -49,7 +52,6 @@ public class NodeRelationServiceImpl implements NodeRelationService {
         Nodes childNode = nodeRepository.findById(nodeRelationRequestDTO.getChild())
                 .orElseThrow(() -> new EntityNotFoundException("Child node not found"));
 
-        // Reattach entities if they are detached
         if (!entityManager.contains(parentNode)) {
             parentNode = entityManager.merge(parentNode);
         }
@@ -75,7 +77,6 @@ public class NodeRelationServiceImpl implements NodeRelationService {
         Nodes childNode = nodeRepository.findById(nodeRelationRequestDTO.getChild())
                 .orElseThrow(() -> new EntityNotFoundException("Child node not found"));
 
-        // Reattach entities if they are detached
         if (!entityManager.contains(parentNode)) {
             parentNode = entityManager.merge(parentNode);
         }

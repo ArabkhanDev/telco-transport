@@ -7,8 +7,7 @@ import java.util.List;
 @Data
 public class NodeRelationResponseDTO {
 
-    private List<NodeResponseDTO> parentNodes;
-
-
+    private Long parentId;
+    private Long childId;
 
 }
