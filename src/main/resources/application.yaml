@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:3306}/telco?allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8
+    username: &username ${DB_CONNECTION_USERNAME:root}
+    password: &password ${DB_CONNECTION_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: "SELECT 1"
+    timeBetweenEvictionRunsMillis: 60000
+    testOnBorrow: true
+    validationInterval: 10000
+    logValidationErrors: true
+    hikari:
+      leakDetectionThreshold: 30000
+      validationTimeout: 300000
+      removeAbandoned: true
+      removeAbandonedTimeout: 60
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          useJdbcMetadataDefaults: "false"
+        dialect: org.hibernate.dialect.MySQLDialect
+        connection:
+          providerDisablesAutocommit: false
+    showSql: false
+    generateDdl: false
+    openInView: false
+    hibernate:
+      ddlAuto: update
+
+
